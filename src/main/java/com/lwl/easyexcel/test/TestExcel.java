@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import com.alibaba.excel.EasyExcel;
@@ -47,7 +48,7 @@ public class TestExcel {
      */
     @Test
     public void read() {
-        String filePath = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\user.xlsx";
+        String filePath = this.getDir() + "user.xlsx";
         //read()有多种构造函数，也可接收文件对象、文件流。
         //sheet()用于指定第几个表单，默认是第一个,有多种构造。
         //headRowNumber()指定excel中表头占多少行
@@ -68,7 +69,7 @@ public class TestExcel {
      */
     @Test
     public void read2() {
-        String filePath = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\user.xlsx";
+        String filePath = this.getDir() + "user.xlsx";
         // 方法1：doReadAll()
         //EasyExcel.read(filePath, User.class, new ExcelReadListener()).doReadAll();
 
@@ -89,7 +90,7 @@ public class TestExcel {
      */
     @Test
     public void write() {
-        String filePath = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\user2.xlsx";
+        String filePath = this.getDir() + "user2.xlsx";
         User user1 = User.builder().name("zs").age(19).sex(1).birthday("2021-07-08 00:00:00").height("172.25").remark("我是一个人类").build();
         User user2 = User.builder().name("ls").age(18).sex(1).birthday("2021-07-08 00:00:00").height("172.56").remark("我是一个人类").build();
         User user3 = User.builder().name("ww").age(19).sex(1).birthday("2021-07-08 00:00:00").height("172.0").remark("我是一个人类").build();
@@ -114,7 +115,7 @@ public class TestExcel {
         //==============测试自定义动态表头
         //EasyExcel.write(filePath, User.class).head(tableHead).sheet("用户").doWrite(userList);
         //等效
-        EasyExcel.write(filePath).head(tableHead).sheet("用户").doWrite(userList);
+        //EasyExcel.write(filePath).head(tableHead).sheet("用户").doWrite(userList);
         //===========自动列宽测试：结果不理想
         // 注 POI对中文的自动列宽适配不友好，easyexcel对数字也不能准确适配列宽，虽然提供的适配策略，但也不能精确适配，可以自己重写
         //LongestMatchColumnWidthStyleStrategy longestMatchColumnWidthStyleStrategy = new LongestMatchColumnWidthStyleStrategy();
@@ -147,6 +148,8 @@ public class TestExcel {
         //}
         ////千万别忘记finish关闭流
         //excelWriter.finish();
+
+        log.info("导出成功！");
     }
 
     /**
@@ -154,7 +157,7 @@ public class TestExcel {
      */
     @Test
     public void styleWrite() {
-        String filePath = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\user2.xlsx";
+        String filePath = this.getDir() + "user2.xlsx";
         User user1 = User.builder().name("zs").age(19).sex(1).birthday("2021-07-08 00:00:00").height("172.25").remark("我是一个人类").build();
         User user2 = User.builder().name("ls").age(18).sex(1).birthday("2021-07-08 00:00:00").height("172.56").remark("我是一个人类").build();
         User user3 = User.builder().name("ww").age(19).sex(1).birthday("2021-07-08 00:00:00").height("172.0").remark("我是一个人类").build();
@@ -206,6 +209,7 @@ public class TestExcel {
         // 注意 不知道为什么，如果用自定义的动态表头，内容设置的背景颜色没有效果  待弄
         //EasyExcel.write(filePath).head(head).registerWriteHandler(horizontalCellStyleStrategy).registerWriteHandler(longestMatchColumnWidthStyleStrategy).sheet("用户").doWrite(userList);
 
+        log.info("导出成功！");
     }
 
     /**
@@ -213,7 +217,7 @@ public class TestExcel {
      */
     @Test
     public void write2() {
-        String filePath = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\user2.xlsx";
+        String filePath = this.getDir() + "user2.xlsx";
         User user1 = User.builder().name("zs").age(19).sex(1).birthday("2021-07-08 00:00:00").height("172.25").remark("我是一个人类").build();
         User user2 = User.builder().name("ls").age(18).sex(1).birthday("2021-07-08 00:00:00").height("172.56").remark("我是一个人类").build();
         User user3 = User.builder().name("ww").age(19).sex(1).birthday("2021-07-08 00:00:00").height("172.0").remark("我是一个人类").build();
@@ -249,6 +253,8 @@ public class TestExcel {
                 .head(head)
                 .sheet("用户")
                 .doWrite(userList);
+
+        log.info("导出成功！");
     }
 
     /**
@@ -258,12 +264,12 @@ public class TestExcel {
      */
     @Test
     public void imageWrite() throws Exception {
-        String fileName = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\image.xlsx";
+        String fileName = this.getDir() + "image.xlsx";
         ImageData imageData = null;
         try {
             List<ImageData> imageDataList = new ArrayList<>();
             imageData = new ImageData();
-            String imagePath = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\宝箱钥匙.jpg";
+            String imagePath = this.getDir() + "宝箱钥匙.jpg";
             // 放入五种类型的图片 根据实际使用只要选一种即可
             //注 以下四种方式只适用于导出本地服务器的图片
             imageData.setByteArray(FileUtils.readFileToByteArray(new File(imagePath)));
@@ -290,9 +296,9 @@ public class TestExcel {
     @Test
     public void simpleFill() {
         // 模板 注意 用{}来表示要用的变量 如果本来就有特殊字符{ 、}，则用"\{"、"\}"代替
-        String templateFileName = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\template.xlsx";
+        String templateFileName = this.getDir() + "template.xlsx";
         // 实例
-        String fileName = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\templateExample.xlsx";
+        String fileName = this.getDir() + "templateExample.xlsx";
 
         // 方案1：根据对象填充，填充到第一个sheet， 然后文件流会自动关闭
         //FillData fillData = new FillData("丁春秋", 25);
@@ -306,7 +312,7 @@ public class TestExcel {
 
         //===========多行数据填充 注 上文方案1、2只能填充一行
         // 模板 注意 此时模板中变量引用为：｛.name｝，点表示该参数是集合
-        String templateFileName2 = "F:\\IDEAWorkSpace\\test\\src\\main\\java\\com\\lwl\\test\\测试2_7月\\easyExcel\\excel\\template2.xlsx";
+        String templateFileName2 = this.getDir() + "template2.xlsx";
         ExcelWriter excelWriter = EasyExcel.write(fileName).withTemplate(templateFileName2).build();
         WriteSheet writeSheet = EasyExcel.writerSheet().build();
         // 注 forceNewRow（）代表在写入list的时，不管list下面有没有空行都会创建一行，然后下面的数据往后移动。默认是false，会直接使用下一行，如果没有，则创建。如果设置为true,有个缺点：会把所有的数据都放到内存，慎用。简单的说就是，如果模板有list，且list不是最后一行，即还有数据需要填充，就必须设置 forceNewRow=true ，但是这个就会把所有数据放到内存 会很耗内存
@@ -326,6 +332,8 @@ public class TestExcel {
         FillData fillData = new FillData("冉菜菜", 25);
         excelWriter.fill(fillData, fillConfig, writeSheet);
         excelWriter.finish();
+
+        log.info("导出成功！");
     }
 
     /**
@@ -333,7 +341,7 @@ public class TestExcel {
      */
     @Test
     public void synchronousRead() {
-        String fileName = "F:\\IDEAWorkSpace\\study2021\\easyExcel\\src\\main\\java\\com\\lwl\\easyexcel\\excel\\user.xlsx";
+        String fileName = this.getDir() + "user.xlsx";
 
         //方法1：指定读用哪个.class去读
         List<Object> list = EasyExcel.read(fileName).head(User.class).sheet().doReadSync();
@@ -353,6 +361,19 @@ public class TestExcel {
             map = (Map<Integer, Object>) obj;
             System.out.println("读取到数据: " + JSON.toJSONString(map));
         }
+    }
+
+    /**
+     * 获取文件目录前缀
+     *
+     * @return
+     */
+    public String getDir() {
+        String path = Objects.requireNonNull(this.getClass().getClassLoader().getResource("")).getPath();
+        //System.out.println("path:" + path);//结果：/F:/IDEAWorkSpace/modules/code_generator/target/test-classes/
+        int index = path.indexOf("easyExcel");
+        //System.out.println(path.substring(1, index) + "easyExcel/src/main/java/com/lwl/easyexcel/excel");
+        return path.substring(1, index) + "easyExcel/src/main/java/com/lwl/easyexcel/excel/";
     }
 
 
